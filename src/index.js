@@ -6,12 +6,26 @@ import dotenv from "dotenv";
 import { DB_NAME } from "./constants.js";
 
 import express from "express";
+const app=express();
+
+
 dotenv.config({
   path:'./env'
 })
 
   
-connectDb();
+connectDb()
+.then(()=>{
+  app.on("error",(error)=>{
+    console.error("error occured before connection",error);
+  })
+  app.listen(process.env.PORT||8000,()=>{
+    console.log(`SERVER IS RUNNING AT PORT : ${process.env.PORT}`)
+  })
+ 
+}).catch((err)=>{
+  console.log("CONNECTION FAILED ",err);
+});
    
 
 
